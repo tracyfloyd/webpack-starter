@@ -2,7 +2,6 @@
   "name": "custom-wordpress-sage-theme",
   "private": true,
   "scripts": {
-    "predev": "curl -i https://dev-phassociation.pantheonsite.io",
     "build": "set NODE_ENV=production  &&  webpack --config ./webpack/build.js",
     "build:hashed": "set NODE_ENV=production  &&  webpack --env hashFilenames --config ./webpack/build.js",
     "dev": "set NODE_ENV=development  &&  webpack --progress --config ./webpack/dev.js",
