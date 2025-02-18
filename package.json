@@ -1,14 +1,18 @@
 {
+  "name": "custom-wordpress-sage-theme",
   "private": true,
-  "browserslist": [
-    "last 2 versions",
-    "> 2%"
-  ],
   "scripts": {
+    "predev": "curl -i https://dev-phassociation.pantheonsite.io",
     "build": "set NODE_ENV=production  &&  webpack --config ./webpack/build.js",
-    "build:hashed": "set NODE_ENV=production  &&  webpack --config ./webpack/build-hashed.js",
+    "build:hashed": "set NODE_ENV=production  &&  webpack --env hashFilenames --config ./webpack/build.js",
     "dev": "set NODE_ENV=development  &&  webpack --progress --config ./webpack/dev.js",
-    "dev:hashed": "set NODE_ENV=development  &&  webpack --progress --config ./webpack/dev-hashed.js",
+    "dev:hashed": "set NODE_ENV=development  &&  webpack --progress --env hashFilenames --config ./webpack/dev.js",
+    "translate": "npm run translate:pot && npm run translate:update",
+    "translate:pot": "wp i18n make-pot . ./resources/lang/sage.pot --include=\"theme.json,patterns,app,resources\"",
+    "translate:update": "for file in ./resources/lang/*.po; do wp i18n update-po ./resources/lang/sage.pot $file; done",
+    "translate:compile": "npm run translate:mo && npm run translate:js",
+    "translate:js": "wp i18n make-json ./resources/lang --pretty-print",
+    "translate:mo": "wp i18n make-mo ./resources/lang ./resources/lang",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "eslint resources/scripts",
     "lint:js-fix": "eslint --fix",
@@ -40,7 +44,7 @@
     "postcss": "^8.5.2",
     "postcss-loader": "^8.1.1",
     "prettier": "^3.5.1",
-    "purgecss-webpack-plugin": "^7.0.2",
+    "purgecss": "^7.0.2",
     "query-string": "^9.1.1",
     "reframe.js": "^4.0.2",
     "sass": "1.77.6",
@@ -59,11 +63,10 @@
     "webpack-manifest-plugin": "^5.0.0",
     "webpack-merge": "^6.0.1"
   },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
+  "browserslist": [
+    "last 2 versions",
+    "> 2%"
+  ],
   "engines": {
     "node": ">=20.18.0"
   },
